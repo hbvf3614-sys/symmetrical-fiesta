@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --rose: #ff6b9d;
+  --rose2: #ff3d7f;
+  --lilac: #c084fc;
+  --sky: #67e8f9;
+  --gold: #fbbf24;
+  --deep: #0a0010;
+}
+
+html, body {
+  width: 100%; min-height: 100vh;
+  overflow-x: hidden;
+  font-family: 'DM Sans', sans-serif;
+  background: var(--deep);
+  color: #fff;
+}
+
+/* ══ CANVAS BG ══ */
+#bgCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ══ TOUCH GLOW ══ */
+.touch-glow {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: screen;
+  transform: translate(-50%, -50%);
+  animation: glowFade 1.2s ease-out forwards;
+}
+@keyframes glowFade {
+  0%   { width: 0px; height: 0px; opacity: 1; }
+  40%  { width: 120px; height: 120px; opacity: 0.9; }
+  100% { width: 200px; height: 200px; opacity: 0; }
+}
+
+/* ══ PAGES ══ */
+.page {
+  display: none;
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 40px 24px;
+}
+.page.active { display: flex; }
+
+/* ══ GLASS CARD ══ */
+.glass {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.12);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  box-shadow:
+    0 0 0 1px rgba(255,107,157,0.1),
+    0 30px 80px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* ═══════════════ PAGE 1 ═══════════════ */
+#p1 { gap: 0; }
+
+.p1-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+  width: 100%;
+  max-width: 500px;
+}
+
+/* Petals */
+.petal-ring {
+  position: relative;
+  width: 140px; height: 140px;
+}
+.petal-ring-inner {
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,107,157,0.15), rgba(192,132,252,0.05));
+  border: 1px solid rgba(255,107,157,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 4.5rem;
+  box-shadow:
+    0 0 40px rgba(255,107,157,0.3),
+    0 0 80px rgba(192,132,252,0.15),
+    inset 0 0 40px rgba(255,107,157,0.05);
+  animation: breathe 4s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%,100% { transform: scale(1); box-shadow: 0 0 40px rgba(255,107,157,0.3), 0 0 80px rgba(192,132,252,0.15); }
+  50%      { transform: scale(1.06); box-shadow: 0 0 70px rgba(255,107,157,0.5), 0 0 120px rgba(192,132,252,0.3); }
+}
+
+.orbit {
+  position: absolute; inset: -20px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255,107,157,0.2);
+  animation: spin 12s linear infinite;
+}
+.orbit::before, .orbit::after {
+  content: '🌸';
+  position: absolute;
+  font-size: 1rem;
+}
+.orbit::before { top: 0; left: 50%; transform: translateX(-50%); }
+.orbit::after  { bottom: 0; left: 50%; transform: translateX(-50%); }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Title */
+.main-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.4rem, 8vw, 4rem);
+  font-weight: 300;
+  line-height: 1.1;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, #fff 0%, #ffb7d5 40%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.main-title em {
+  font-style: italic;
+  font-size: 1.15em;
+}
+
+.main-sub {
+  color: rgba(255,255,255,0.4);
+  font-size: 0.8rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-top: -20px;
+}
+
+/* Card */
+.q-card {
+  border-radius: 28px;
+  padding: 44px 36px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.q-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,107,157,0.06), rgba(192,132,252,0.06));
+  pointer-events: none;
+}
+
+.q-line {
+  width: 48px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,107,157,0.6), transparent);
+  margin: 0 auto 28px;
+}
+
+.q-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  font-weight: 300;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.q-sub {
+  color: rgba(255,255,255,0.35);
+  font-size: 0.78rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 36px;
+}
+
+.btn-row { display: flex; gap: 14px; justify-content: center; }
+
+.btn-yes {
+  position: relative;
+  padding: 15px 44px;
+  border: none;
+  border-radius: 50px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ff6b9d, #c084fc);
+  color: #fff;
+  box-shadow: 0 0 30px rgba(255,107,157,0.4), 0 0 60px rgba(192,132,252,0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-yes::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+}
+.btn-yes:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 0 50px rgba(255,107,157,0.6), 0 0 100px rgba(192,132,252,0.3);
+}
+
+.btn-no {
+  padding: 15px 44px;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 50px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.5);
+  backdrop-filter: blur(10px);
+  transition: all 0.2s;
+  position: fixed;
+  z-index: 200;
+}
+.btn-no.idle {
+  position: relative;
+  z-index: auto;
+}
+.btn-no:hover { border-color: rgba(255,107,157,0.4); color: rgba(255,255,255,0.7); }
+
+/* ═══════════════ PAGE 2 — WRONG ═══════════════ */
+#p2 { }
+
+.wrong-card {
+  border-radius: 28px;
+  padding: 52px 40px;
+  max-width: 440px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.wrong-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(251,191,36,0.05), rgba(255,107,157,0.05));
+}
+
+.wrong-icon {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 24px;
+  animation: wobble 0.6s ease-in-out;
+}
+@keyframes wobble {
+  0%,100% { transform: rotate(0); }
+  20% { transform: rotate(-12deg); }
+  40% { transform: rotate(12deg); }
+  60% { transform: rotate(-8deg); }
+  80% { transform: rotate(8deg); }
+}
+
+.wrong-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 300;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #fbbf24, #fb923c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.wrong-body {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.9rem;
+  line-height: 1.8;
+  margin-bottom: 36px;
+}
+
+.btn-retry {
+  padding: 14px 40px;
+  border: 1px solid rgba(251,191,36,0.3);
+  border-radius: 50px;
+  background: rgba(251,191,36,0.08);
+  color: #fbbf24;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 0 20px rgba(251,191,36,0.1);
+}
+.btn-retry:hover {
+  background: rgba(251,191,36,0.15);
+  box-shadow: 0 0 40px rgba(251,191,36,0.25);
+}
+
+/* ═══════════════ PAGE 3 — GIFT ═══════════════ */
+#p3 {}
+
+.gift-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem,6vw,3rem);
+  font-weight: 300;
+  letter-spacing: 3px;
+  background: linear-gradient(135deg, #fff, #ffb7d5, #c084fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+.gift-sub2 {
+  color: rgba(255,255,255,0.35);
+  font-size: 0.75rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 48px;
+}
+
+.gift-outer {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  margin-bottom: 24px;
+}
+.gift-aura {
+  position: absolute;
+  inset: -30px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,107,157,0.3), transparent 70%);
+  animation: aura 3s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes aura {
+  0%,100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+.gift-emoji {
+  font-size: 7rem;
+  display: block;
+  animation: giftFloat 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 30px rgba(255,107,157,0.6)) drop-shadow(0 0 60px rgba(192,132,252,0.4));
+  transition: transform 0.2s;
+}
+.gift-emoji:hover { transform: scale(1.12) rotate(5deg); }
+@keyframes giftFloat {
+  0%,100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-16px) rotate(2deg); }
+}
+.tap-hint {
+  color: rgba(255,255,255,0.3);
+  font-size: 0.72rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  animation: hint 2s ease-in-out infinite;
+}
+@keyframes hint { 0%,100%{opacity:0.3} 50%{opacity:0.8} }
+
+/* ═══════════════ PAGE 4 — REVEAL ═══════════════ */
+#p4 { padding: 60px 20px; }
+
+.reveal-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem,7vw,3.5rem);
+  font-weight: 300;
+  letter-spacing: 3px;
+  background: linear-gradient(135deg, #fff 0%, #ffb7d5 50%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 6px;
+}
+.reveal-sub {
+  color: rgba(255,255,255,0.3);
+  font-size: 0.72rem;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  margin-bottom: 48px;
+}
+
+.sections-wrap {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 860px;
+  width: 100%;
+  margin-bottom: 32px;
+}
+
+.reveal-section {
+  border-radius: 24px;
+  padding: 28px 20px;
+  animation: riseIn 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.reveal-section:nth-child(1) { animation-delay: 0.1s; }
+.reveal-section:nth-child(2) { animation-delay: 0.25s; }
+@keyframes riseIn {
+  from { transform: translateY(40px) scale(0.9); opacity: 0; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.sec-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 300;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 18px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.sec-title::before, .sec-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1));
+}
+.sec-title::after { background: linear-gradient(90deg, rgba(255,255,255,0.1), transparent); }
+
+.img-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.img-wrap {
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+.img-wrap:hover { transform: scale(1.04); z-index: 2; }
+
+.food-wrap { aspect-ratio: 1; }
+.cloth-wrap { aspect-ratio: 0.72; }
+
+.img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s;
+}
+.img-wrap:hover img { transform: scale(1.08); }
+
+.img-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.65));
+  padding: 14px 6px 6px;
+  font-size: 0.62rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.85);
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Glow ring on images */
+.img-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  box-shadow: inset 0 0 0 1px rgba(255,107,157,0.15);
+  pointer-events: none;
+  transition: box-shadow 0.3s;
+}
+.img-wrap:hover::after {
+  box-shadow: inset 0 0 0 1px rgba(255,107,157,0.5), 0 0 20px rgba(255,107,157,0.2);
+}
+
+/* Love letter */
+.love-letter {
+  border-radius: 24px;
+  padding: 36px 32px;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  animation: riseIn 0.6s 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+  position: relative;
+  overflow: hidden;
+}
+.love-letter::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,107,157,0.05), rgba(192,132,252,0.05));
+}
+
+.letter-icon { font-size: 2rem; margin-bottom: 16px; display: block; }
+.letter-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-style: italic;
+  line-height: 1.9;
+  color: rgba(255,255,255,0.65);
+  font-weight: 300;
+}
+.letter-body strong {
+  color: rgba(255,255,255,0.9);
+  font-style: normal;
+  font-weight: 400;
+}
+.letter-sign {
+  margin-top: 20px;
+  font-size: 0.75rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,107,157,0.6);
+}
+
+/* Confetti */
+.cfetti {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  animation: cfFall linear forwards;
+  border-radius: 2px;
+}
+@keyframes cfFall {
+  0%   { opacity: 1; transform: translateY(0) rotate(0deg); }
+  100% { opacity: 0; transform: translateY(100vh) rotate(720deg); }
+}
+
+@media(max-width:480px) {
+  .q-card { padding: 36px 20px; }
+  .wrong-card, .love-letter { padding: 36px 20px; }
+  .img-grid-3 { gap: 7px; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+
+<!-- ══════════ PAGE 1: QUESTION ══════════ -->
+<div class="page active" id="p1">
+  <div class="p1-inner">
+
+    <div class="petal-ring">
+      <div class="orbit"></div>
+      <div class="petal-ring-inner">🌸</div>
+    </div>
+
+    <div>
+      <div class="main-title"><em>For</em> You</div>
+      <div class="main-sub">あなたへ · a little question</div>
+    </div>
+
+    <div class="glass q-card">
+      <div class="q-line"></div>
+      <div class="q-text">Are you happy today?</div>
+      <div class="q-sub">✦ Think before you answer ✦</div>
+      <div class="btn-row">
+        <button class="btn-yes" onclick="goGift()">Yes ✦</button>
+        <button class="btn-no idle" id="noBtn" onclick="flee()">No...</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ PAGE 2: WRONG ══════════ -->
+<div class="page" id="p2">
+  <div class="glass wrong-card">
+    <span class="wrong-icon">🙅‍♀️</span>
+    <div class="wrong-title">Wrong answer, love.</div>
+    <div class="wrong-body">
+      ぶっぶー！ That's not right~<br><br>
+      You are always happy — because someone out there loves you with their whole heart.
+      <br><br>Go back and choose the truth. 💕
+    </div>
+    <button class="btn-retry" onclick="goBack()">← Try Again</button>
+  </div>
+</div>
+
+<!-- ══════════ PAGE 3: GIFT BOX ══════════ -->
+<div class="page" id="p3">
+  <div class="gift-label">A Gift For You</div>
+  <div class="gift-sub2">あなたへのプレゼント</div>
+
+  <div class="gift-outer" onclick="openGift()">
+    <div class="gift-aura"></div>
+    <span class="gift-emoji">🎁</span>
+  </div>
+
+  <div class="tap-hint">✦ tap to unwrap ✦</div>
+</div>
+
+<!-- ══════════ PAGE 4: REVEAL ══════════ -->
+<div class="page" id="p4">
+  <div class="reveal-title">Your Gifts 🎀</div>
+  <div class="reveal-sub">curated just for you · あなたのために</div>
+
+  <div class="sections-wrap">
+
+    <!-- FOOD -->
+    <div class="glass reveal-section">
+      <div class="sec-title">Yummy Foods</div>
+      <div class="img-grid-3">
+        <div class="img-wrap food-wrap">
+          <img src="https://images.unsplash.com/photo-1582450871972-ab5ca641643d?w=300&q=85" alt="Sushi" loading="lazy">
+          <div class="img-overlay">Sushi 🍣</div>
+        </div>
+        <div class="img-wrap food-wrap">
+          <img src="https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=300&q=85" alt="Ramen" loading="lazy">
+          <div class="img-overlay">Ramen 🍜</div>
+        </div>
+        <div class="img-wrap food-wrap">
+          <img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=300&q=85" alt="Macarons" loading="lazy">
+          <div class="img-overlay">Macarons 🌸</div>
+        </div>
+        <div class="img-wrap food-wrap">
+          <img src="https://images.unsplash.com/photo-1587314168485-3236d6710814?w=300&q=85" alt="Matcha" loading="lazy">
+          <div class="img-overlay">Matcha 🍵</div>
+        </div>
+        <div class="img-wrap food-wrap">
+          <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=300&q=85" alt="Ice Cream" loading="lazy">
+          <div class="img-overlay">Ice Cream 🍦</div>
+        </div>
+        <div class="img-wrap food-wrap">
+          <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=300&q=85" alt="Cake" loading="lazy">
+          <div class="img-overlay">Cake 🎂</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLOTHES -->
+    <div class="glass reveal-section">
+      <div class="sec-title">Pretty Outfits</div>
+      <div class="img-grid-3">
+        <div class="img-wrap cloth-wrap">
+          <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=300&q=85" alt="Dress" loading="lazy">
+          <div class="img-overlay">Floral 🌸</div>
+        </div>
+        <div class="img-wrap cloth-wrap">
+          <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=300&q=85" alt="Outfit" loading="lazy">
+          <div class="img-overlay">Chic ✨</div>
+        </div>
+        <div class="img-wrap cloth-wrap">
+          <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=300&q=85" alt="Fashion" loading="lazy">
+          <div class="img-overlay">Sweet 💕</div>
+        </div>
+        <div class="img-wrap cloth-wrap">
+          <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=300&q=85" alt="Casual" loading="lazy">
+          <div class="img-overlay">Kawaii 🎀</div>
+        </div>
+        <div class="img-wrap cloth-wrap">
+          <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=300&q=85" alt="Pretty" loading="lazy">
+          <div class="img-overlay">Pretty 🌷</div>
+        </div>
+        <div class="img-wrap cloth-wrap">
+          <img src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=300&q=85" alt="Style" loading="lazy">
+          <div class="img-overlay">Lovely 💖</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- LOVE LETTER -->
+  <div class="glass love-letter">
+    <span class="letter-icon">💌</span>
+    <div class="letter-body">
+      <strong>To my favourite person,</strong><br><br>
+      Every little thing I see — beautiful food, pretty clothes, soft colours —
+      they all remind me of you.<br><br>
+      You deserve every good thing in this world.
+      Thank you for being you. 🌸
+    </div>
+    <div class="letter-sign">— always yours ✦</div>
+  </div>
+
+</div>
+
+<script>
+// ══ ANIMATED CANVAS BG ══
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const orbs = [
+  { x:0.15, y:0.2,  r:0.35, hue:320, speed:0.00012 },
+  { x:0.8,  y:0.7,  r:0.30, hue:270, speed:0.00009 },
+  { x:0.5,  y:0.9,  r:0.25, hue:190, speed:0.00015 },
+  { x:0.9,  y:0.15, r:0.20, hue:350, speed:0.00011 },
+  { x:0.3,  y:0.6,  r:0.22, hue:300, speed:0.00013 },
+];
+
+let t = 0;
+function drawBG() {
+  t++;
+  ctx.clearRect(0,0,W,H);
+
+  orbs.forEach((o, i) => {
+    const ox = (o.x + Math.sin(t * o.speed * 1000 + i) * 0.12) * W;
+    const oy = (o.y + Math.cos(t * o.speed * 800 + i*1.3) * 0.1) * H;
+    const r  = o.r * Math.min(W,H);
+    const hue = (o.hue + t * 0.04) % 360;
+
+    const g = ctx.createRadialGradient(ox,oy,0, ox,oy,r);
+    g.addColorStop(0,   `hsla(${hue},90%,65%,0.18)`);
+    g.addColorStop(0.5, `hsla(${hue},80%,55%,0.07)`);
+    g.addColorStop(1,   `hsla(${hue},70%,40%,0)`);
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(ox,oy,r,0,Math.PI*2);
+    ctx.fill();
+  });
+
+  requestAnimationFrame(drawBG);
+}
+drawBG();
+
+// ══ TOUCH / CLICK GLOW ══
+const glowColors = [
+  'rgba(255,107,157,0.6)',
+  'rgba(192,132,252,0.6)',
+  'rgba(103,232,249,0.5)',
+  'rgba(251,191,36,0.5)',
+  'rgba(255,61,127,0.6)',
+];
+let glowIdx = 0;
+
+function spawnGlow(x, y) {
+  const el = document.createElement('div');
+  el.className = 'touch-glow';
+  const color = glowColors[glowIdx++ % glowColors.length];
+  el.style.cssText = `
+    left:${x}px; top:${y}px;
+    background: radial-gradient(circle, ${color}, transparent 70%);
+  `;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 1200);
+}
+
+document.addEventListener('click', e => spawnGlow(e.clientX, e.clientY));
+document.addEventListener('touchstart', e => {
+  Array.from(e.touches).forEach(t => spawnGlow(t.clientX, t.clientY));
+}, { passive: true });
+document.addEventListener('touchmove', e => {
+  Array.from(e.touches).forEach(t => spawnGlow(t.clientX, t.clientY));
+}, { passive: true });
+
+// ══ FALLING PETALS ══
+const petals = ['🌸','🌺','✿','❀','🌷'];
+function makePetal() {
+  const el = document.createElement('div');
+  el.style.cssText = `
+    position:fixed; top:-30px; z-index:2; pointer-events:none;
+    font-size:${0.9+Math.random()*1.1}rem;
+    left:${Math.random()*100}vw;
+    opacity:${0.4+Math.random()*0.4};
+    animation: petalFall ${7+Math.random()*7}s linear ${Math.random()*4}s forwards;
+  `;
+  el.textContent = petals[Math.floor(Math.random()*petals.length)];
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 18000);
+}
+
+const style = document.createElement('style');
+style.textContent = `@keyframes petalFall {
+  0%   { transform: translateY(0) rotate(0deg) translateX(0); opacity:0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.3; }
+  100% { transform: translateY(110vh) rotate(600deg) translateX(${50-Math.random()*100}px); opacity:0; }
+}`;
+document.head.appendChild(style);
+setInterval(makePetal, 900);
+for(let i=0;i<5;i++) setTimeout(makePetal, i*400);
+
+// ══ NO BUTTON ESCAPE ══
+let fleeCount = 0;
+const noBtn = document.getElementById('noBtn');
+
+function flee() {
+  fleeCount++;
+  if (fleeCount > 4) { showPage('p2'); return; }
+
+  noBtn.classList.remove('idle');
+  const margin = 80;
+  const bw = noBtn.offsetWidth || 120;
+  const bh = noBtn.offsetHeight || 50;
+  const nx = margin + Math.random() * (window.innerWidth - bw - margin*2);
+  const ny = margin + Math.random() * (window.innerHeight - bh - margin*2);
+  noBtn.style.left = nx + 'px';
+  noBtn.style.top  = ny + 'px';
+  noBtn.style.transition = 'left 0.25s cubic-bezier(0.34,1.56,0.64,1), top 0.25s cubic-bezier(0.34,1.56,0.64,1)';
+}
+
+// ══ NAVIGATION ══
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function goGift() { showPage('p3'); }
+function goBack() {
+  fleeCount = 0;
+  noBtn.classList.add('idle');
+  noBtn.style.left = '';
+  noBtn.style.top  = '';
+  noBtn.style.position = '';
+  showPage('p1');
+}
+
+function openGift() {
+  confetti();
+  setTimeout(() => showPage('p4'), 700);
+}
+
+// ══ CONFETTI ══
+const cfColors = ['#ff6b9d','#c084fc','#67e8f9','#fbbf24','#ff3d7f','#a78bfa','#34d399'];
+function confetti() {
+  for(let i=0;i<90;i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'cfetti';
+      const size = 6 + Math.random()*10;
+      el.style.cssText = `
+        left:${Math.random()*100}vw;
+        top:-10px;
+        width:${size}px; height:${size}px;
+        background:${cfColors[Math.floor(Math.random()*cfColors.length)]};
+        border-radius:${Math.random()>0.5?'50%':'3px'};
+        animation-duration:${2+Math.random()*2.5}s;
+        animation-delay:${Math.random()*0.4}s;
+      `;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 5000);
+    }, i*18);
+  }
+}
+</script>
+</body>
+</html>
