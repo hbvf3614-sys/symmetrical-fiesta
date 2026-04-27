@@ -1,0 +1,1757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║           E M O T I O N A L   O A S I S                         ║
+  ║      A 7-Stage Immersive Mood Elevation Experience              ║
+  ║      Engineered with love, science, and a lot of sakura         ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emotional Oasis ✦ Your Sanctuary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Nunito:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<style>
+/* ═══════════════════════════════════════════════════
+   DESIGN TOKENS & ROOT VARIABLES
+═══════════════════════════════════════════════════ */
+:root {
+  --blush:     #FFF0F5;
+  --cyan:      #E0F7FA;
+  --sakura:    #FFD1DC;
+  --rose:      #F8A7BE;
+  --lavender:  #EDE7F6;
+  --gold:      #FFD700;
+  --text-deep: #4A3860;
+  --text-mid:  #7E6A9A;
+  --text-soft: #B8A8CC;
+  --glass-bg:  rgba(255,255,255,0.35);
+  --glass-border: rgba(255,255,255,0.55);
+  --glass-shadow: rgba(180,140,180,0.18);
+  --radius-xl: 32px;
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --transition: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ═══════════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  color: var(--text-deep);
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: var(--blush);
+  cursor: none;
+}
+
+/* ═══════════════════════════════════════════════════
+   DYNAMIC GRADIENT BACKGROUND
+═══════════════════════════════════════════════════ */
+#bg-gradient {
+  position: fixed; inset: 0; z-index: 0;
+  background: linear-gradient(135deg, #FFF0F5, #E0F7FA, #FFD1DC, #EDE7F6);
+  background-size: 400% 400%;
+  animation: gradientFlow 18s ease infinite;
+}
+@keyframes gradientFlow {
+  0%   { background-position: 0% 50%; }
+  33%  { background-position: 100% 0%; }
+  66%  { background-position: 50% 100%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ═══════════════════════════════════════════════════
+   PARTICLE CANVAS
+═══════════════════════════════════════════════════ */
+#particle-canvas {
+  position: fixed; inset: 0; z-index: 1;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════
+   CUSTOM CURSOR
+═══════════════════════════════════════════════════ */
+#cursor-dot {
+  position: fixed; z-index: 9999; pointer-events: none;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--rose);
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background 0.3s;
+  box-shadow: 0 0 12px rgba(248,167,190,0.8);
+}
+#cursor-ring {
+  position: fixed; z-index: 9998; pointer-events: none;
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1.5px solid rgba(248,167,190,0.5);
+  transform: translate(-50%, -50%);
+  transition: transform 0.12s var(--transition);
+}
+
+/* ═══════════════════════════════════════════════════
+   MAIN LAYOUT
+═══════════════════════════════════════════════════ */
+#app {
+  position: relative; z-index: 2;
+  max-width: 900px; margin: 0 auto;
+  padding: 40px 20px 100px;
+  display: flex; flex-direction: column; gap: 60px;
+}
+
+/* ═══════════════════════════════════════════════════
+   GLASSMORPHISM CARD BASE
+═══════════════════════════════════════════════════ */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(30px) saturate(150%);
+  -webkit-backdrop-filter: blur(30px) saturate(150%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  box-shadow:
+    0 8px 32px var(--glass-shadow),
+    0 1px 0 rgba(255,255,255,0.8) inset,
+    0 -1px 0 rgba(200,180,220,0.15) inset;
+  padding: 48px 44px;
+  position: relative; overflow: hidden;
+}
+.glass-card::before {
+  content: '';
+  position: absolute; top: 0; left: -60%;
+  width: 40%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+  animation: shimmer 6s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes shimmer {
+  0%   { left: -60%; }
+  100% { left: 160%; }
+}
+
+/* Stage header */
+.stage-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  margin-bottom: 10px;
+}
+.stage-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  font-weight: 300;
+  line-height: 1.25;
+  color: var(--text-deep);
+  margin-bottom: 16px;
+}
+.stage-title em {
+  font-style: italic;
+  color: var(--rose);
+}
+.stage-body {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--text-mid);
+  font-weight: 300;
+  max-width: 580px;
+}
+
+/* ═══════════════════════════════════════════════════
+   GLASS BUTTON BASE
+═══════════════════════════════════════════════════ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px 32px;
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(255,255,255,0.75);
+  border-radius: 100px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-deep);
+  cursor: none;
+  transition: transform 0.25s var(--transition), box-shadow 0.25s var(--transition), background 0.25s;
+  box-shadow: 0 4px 20px rgba(180,140,180,0.2);
+  position: relative; overflow: hidden;
+  user-select: none;
+}
+.btn:hover {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 8px 32px rgba(180,140,180,0.35);
+  background: rgba(255,255,255,0.75);
+}
+.btn:active {
+  transform: scale(0.97);
+}
+.btn-primary {
+  background: linear-gradient(135deg, rgba(248,167,190,0.7), rgba(221,160,221,0.5));
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(120,80,140,0.3);
+}
+.btn-primary:hover {
+  background: linear-gradient(135deg, rgba(248,167,190,0.9), rgba(221,160,221,0.7));
+}
+
+/* ═══════════════════════════════════════════════════
+   STAGE 1 — SANCTUARY GATE
+═══════════════════════════════════════════════════ */
+#stage-1 {
+  text-align: center;
+  margin-top: 30px;
+}
+#stage-1 .glass-card {
+  padding: 60px 44px;
+}
+
+/* Avatar */
+.avatar-wrap {
+  width: 140px; height: 140px;
+  margin: 0 auto 32px;
+  border-radius: 50%;
+  padding: 4px;
+  background: linear-gradient(135deg, #FFD1DC, #E0F7FA, #EDE7F6);
+  box-shadow: 0 12px 40px rgba(200,150,200,0.35);
+  animation: floatBob 4s ease-in-out infinite;
+}
+@keyframes floatBob {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(1deg); }
+}
+.avatar-wrap img {
+  width: 100%; height: 100%; border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255,255,255,0.9);
+}
+
+/* Breath button */
+#breath-btn {
+  margin-top: 28px;
+  position: relative;
+}
+#breath-btn .pulse-ring {
+  position: absolute; inset: -8px;
+  border-radius: 100px;
+  border: 2px solid rgba(248,167,190,0.4);
+  animation: breathPulse 4s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes breathPulse {
+  0%   { transform: scale(1); opacity: 0.8; }
+  50%  { transform: scale(1.12); opacity: 0.3; }
+  100% { transform: scale(1); opacity: 0.8; }
+}
+#breath-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--text-mid);
+  margin-top: 20px;
+  min-height: 28px;
+  transition: opacity 0.5s;
+}
+
+/* Breath circle overlay */
+#breath-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 800;
+  background: rgba(240,220,250,0.92);
+  backdrop-filter: blur(20px);
+  flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 30px;
+}
+#breath-overlay.active { display: flex; }
+#breath-circle {
+  width: 180px; height: 180px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,209,220,0.8), rgba(221,160,221,0.4));
+  border: 2px solid rgba(255,255,255,0.8);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  color: var(--text-deep);
+  box-shadow: 0 0 60px rgba(200,150,220,0.4);
+}
+#breath-phase { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--text-deep); }
+#breath-count { font-family: 'Nunito', sans-serif; font-size: 3.5rem; font-weight: 700; color: var(--rose); }
+#breath-skip {
+  margin-top: 10px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  cursor: none;
+  border: none; background: transparent;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+#breath-skip:hover { color: var(--text-mid); }
+
+/* ═══════════════════════════════════════════════════
+   STAGE 2 — MOOD CHECK-IN
+═══════════════════════════════════════════════════ */
+.mood-grid {
+  display: flex; flex-wrap: wrap; gap: 16px;
+  justify-content: center;
+  margin-top: 32px;
+}
+.mood-orb {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 20px 24px;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.4);
+  border: 1.5px solid rgba(255,255,255,0.65);
+  backdrop-filter: blur(10px);
+  cursor: none;
+  transition: transform 0.3s var(--transition), box-shadow 0.3s, border-color 0.3s, background 0.3s;
+  min-width: 110px;
+}
+.mood-orb:hover {
+  transform: scale(1.08) translateY(-4px);
+  box-shadow: 0 12px 36px rgba(180,140,200,0.3);
+  border-color: rgba(248,167,190,0.7);
+}
+.mood-orb.selected {
+  background: linear-gradient(135deg, rgba(255,209,220,0.6), rgba(237,231,246,0.6));
+  border-color: var(--rose);
+  box-shadow: 0 8px 28px rgba(248,167,190,0.4);
+  transform: scale(1.06);
+}
+.mood-emoji { font-size: 2.6rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1)); }
+.mood-label { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em; color: var(--text-mid); }
+
+#mood-response {
+  margin-top: 28px;
+  padding: 24px 28px;
+  background: rgba(255,255,255,0.35);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255,255,255,0.6);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--text-deep);
+  line-height: 1.7;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s, transform 0.5s;
+}
+#mood-response.visible { opacity: 1; transform: translateY(0); }
+
+/* ═══════════════════════════════════════════════════
+   STAGE 3 — PET SANCTUARY
+═══════════════════════════════════════════════════ */
+.pet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 32px;
+}
+.pet-card {
+  background: rgba(255,255,255,0.4);
+  border: 1px solid rgba(255,255,255,0.65);
+  border-radius: var(--radius-xl);
+  padding: 28px 24px;
+  text-align: center;
+  backdrop-filter: blur(20px);
+  transition: transform 0.35s var(--transition), box-shadow 0.35s;
+  position: relative; overflow: hidden;
+}
+.pet-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 48px rgba(180,140,200,0.25);
+}
+.pet-img-wrap {
+  width: 120px; height: 120px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(255,255,255,0.9);
+  box-shadow: 0 8px 24px rgba(180,140,200,0.3);
+  background: linear-gradient(135deg, #FFD1DC, #E0F7FA);
+}
+.pet-emoji-fallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 4rem;
+}
+.pet-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-style: italic;
+  color: var(--text-deep);
+  margin-bottom: 6px;
+}
+.pet-tagline {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+.pet-canvas {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  border-radius: var(--radius-xl);
+}
+.pet-love-count {
+  font-size: 0.78rem;
+  color: var(--rose);
+  font-weight: 600;
+  margin-top: 8px;
+  min-height: 20px;
+}
+
+/* ═══════════════════════════════════════════════════
+   STAGE 4 — AFFIRMATION MIRROR
+═══════════════════════════════════════════════════ */
+.wisdom-container {
+  display: flex; flex-wrap: wrap; gap: 16px;
+  justify-content: center;
+  margin-top: 32px;
+  min-height: 220px;
+  align-items: center;
+}
+.wisdom-bubble {
+  padding: 18px 26px;
+  border-radius: 100px;
+  background: linear-gradient(135deg, rgba(255,209,220,0.45), rgba(237,231,246,0.45));
+  border: 1.5px solid rgba(255,255,255,0.7);
+  backdrop-filter: blur(15px);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--text-deep);
+  cursor: none;
+  transition: transform 0.3s var(--transition), box-shadow 0.3s, opacity 0.3s;
+  animation: bubbleFloat 5s ease-in-out infinite;
+  text-align: center;
+  max-width: 260px;
+  line-height: 1.5;
+  user-select: none;
+}
+.wisdom-bubble:nth-child(2) { animation-delay: 0.8s; animation-duration: 5.5s; }
+.wisdom-bubble:nth-child(3) { animation-delay: 1.5s; animation-duration: 4.8s; }
+.wisdom-bubble:nth-child(4) { animation-delay: 2.2s; animation-duration: 6s; }
+.wisdom-bubble:nth-child(5) { animation-delay: 0.4s; animation-duration: 5.2s; }
+
+@keyframes bubbleFloat {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
+}
+.wisdom-bubble:hover {
+  transform: scale(1.04) translateY(-4px) !important;
+  box-shadow: 0 12px 40px rgba(200,150,200,0.3);
+}
+.wisdom-bubble.popped {
+  animation: popOut 0.5s var(--transition) forwards;
+}
+@keyframes popOut {
+  0%   { transform: scale(1); opacity: 1; }
+  30%  { transform: scale(1.2); }
+  100% { transform: scale(0); opacity: 0; }
+}
+.wisdom-reveal {
+  padding: 20px 28px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(255,209,220,0.6);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--text-deep);
+  line-height: 1.65;
+  animation: revealIn 0.6s var(--transition) both;
+  display: none;
+}
+.wisdom-reveal.show { display: block; }
+@keyframes revealIn {
+  0% { transform: scale(0.8) translateY(10px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+#affirmations-revealed {
+  display: flex; flex-wrap: wrap; gap: 14px;
+  margin-top: 24px;
+  justify-content: center;
+}
+
+/* ═══════════════════════════════════════════════════
+   STAGE 5 — STRESS CRUSHER
+═══════════════════════════════════════════════════ */
+#stress-arena {
+  width: 100%;
+  height: 320px;
+  border-radius: var(--radius-xl);
+  background: rgba(255,255,255,0.25);
+  border: 1px solid rgba(255,255,255,0.5);
+  position: relative; overflow: hidden;
+  backdrop-filter: blur(10px);
+  margin-top: 28px;
+}
+.stress-cloud {
+  position: absolute;
+  cursor: none;
+  user-select: none;
+  transition: transform 0.15s;
+  filter: drop-shadow(0 4px 12px rgba(120,100,150,0.2));
+  font-size: 3.2rem;
+  animation: cloudDrift linear forwards;
+}
+.stress-cloud:hover { transform: scale(1.1); }
+@keyframes cloudDrift {
+  from { transform: translateX(0); }
+  to   { transform: translateX(calc(100vw + 120px)); }
+}
+.bloom {
+  position: absolute;
+  pointer-events: none;
+  font-size: 2.2rem;
+  animation: bloomAnim 2.8s ease-out forwards;
+}
+@keyframes bloomAnim {
+  0%   { transform: scale(0) rotate(-20deg); opacity: 1; }
+  40%  { transform: scale(1.3) rotate(10deg); opacity: 1; }
+  70%  { transform: scale(1) rotate(5deg) translateY(-20px); opacity: 0.9; }
+  100% { transform: scale(0.8) rotate(0deg) translateY(-50px); opacity: 0; }
+}
+#cloud-score {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--text-soft);
+}
+#cloud-score span { color: var(--rose); font-weight: 700; font-size: 1.1rem; }
+
+/* ═══════════════════════════════════════════════════
+   STAGE 6 — MEMORY JAR
+═══════════════════════════════════════════════════ */
+.jar-layout {
+  display: flex; gap: 28px; align-items: flex-start;
+  flex-wrap: wrap;
+  margin-top: 32px;
+}
+.jar-input-area {
+  flex: 1; min-width: 260px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+#memory-input {
+  width: 100%;
+  padding: 18px 22px;
+  border-radius: var(--radius-lg);
+  border: 1.5px solid rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.45);
+  backdrop-filter: blur(15px);
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  color: var(--text-deep);
+  resize: none;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  height: 120px;
+  line-height: 1.7;
+}
+#memory-input:focus {
+  border-color: rgba(248,167,190,0.7);
+  box-shadow: 0 0 0 4px rgba(248,167,190,0.12);
+}
+#memory-input::placeholder { color: var(--text-soft); }
+
+.jar-display {
+  flex: 0 0 180px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.jar-svg-wrap {
+  position: relative;
+  width: 130px; height: 160px;
+}
+.jar-svg-wrap svg { width: 100%; height: 100%; }
+#jar-stars-container {
+  position: absolute;
+  inset: 20px 16px 30px;
+  overflow: hidden;
+  border-radius: 8px 8px 16px 16px;
+  display: flex; flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 4px;
+  padding: 6px;
+}
+.jar-star {
+  font-size: 1.1rem;
+  animation: starSettle 0.6s var(--transition) both;
+  filter: drop-shadow(0 0 6px rgba(255,215,0,0.6));
+}
+@keyframes starSettle {
+  0% { transform: scale(0) rotate(180deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+.jar-count { font-size: 0.82rem; color: var(--text-soft); font-weight: 600; }
+
+/* Flying star animation */
+.flying-star {
+  position: fixed;
+  font-size: 1.4rem;
+  pointer-events: none;
+  z-index: 600;
+  filter: drop-shadow(0 0 8px rgba(255,215,0,0.8));
+}
+
+/* ═══════════════════════════════════════════════════
+   STAGE 7 — FINAL EMBRACE
+═══════════════════════════════════════════════════ */
+#stage-7 { text-align: center; }
+.embrace-img {
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 32px;
+  display: block;
+  border: 4px solid rgba(255,255,255,0.9);
+  box-shadow: 0 16px 60px rgba(200,150,200,0.4);
+  animation: floatBob 4s ease-in-out infinite;
+}
+.embrace-emoji-fallback {
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FFD1DC, #EDE7F6);
+  margin: 0 auto 32px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 7rem;
+  border: 4px solid rgba(255,255,255,0.9);
+  box-shadow: 0 16px 60px rgba(200,150,200,0.4);
+  animation: floatBob 4s ease-in-out infinite;
+}
+.btn-hug {
+  background: linear-gradient(135deg, rgba(255,182,193,0.7), rgba(221,160,221,0.6));
+  font-size: 1.1rem;
+  padding: 18px 48px;
+  border-radius: 100px;
+}
+.badge-area { margin-top: 28px; }
+
+/* HUG OVERLAY */
+#hug-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 900;
+  pointer-events: none;
+  overflow: hidden;
+}
+#hug-overlay.active { display: block; }
+#hug-light {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(255,230,240,0.0), transparent);
+  pointer-events: none;
+}
+.hug-heart {
+  position: absolute;
+  font-size: 2rem;
+  pointer-events: none;
+  animation: heartRise ease-out both;
+}
+@keyframes heartRise {
+  0%   { transform: translateY(0) scale(0) rotate(-15deg); opacity: 0; }
+  20%  { opacity: 1; }
+  100% { transform: translateY(-80vh) scale(1.2) rotate(10deg); opacity: 0; }
+}
+
+/* ═══════════════════════════════════════════════════
+   PROGRESS DOTS
+═══════════════════════════════════════════════════ */
+#progress-nav {
+  position: fixed; right: 20px; top: 50%;
+  transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 12px;
+  z-index: 100;
+}
+.prog-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(180,140,200,0.35);
+  border: 1px solid rgba(255,255,255,0.6);
+  cursor: none;
+  transition: all 0.35s var(--transition);
+}
+.prog-dot.active {
+  background: var(--rose);
+  box-shadow: 0 0 12px rgba(248,167,190,0.6);
+  transform: scale(1.4);
+}
+
+/* ═══════════════════════════════════════════════════
+   SCROLL REVEAL
+═══════════════════════════════════════════════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+/* ═══════════════════════════════════════════════════
+   SECTION DIVIDER
+═══════════════════════════════════════════════════ */
+.divider {
+  width: 60px; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--rose), transparent);
+  margin: 20px auto 0;
+}
+
+/* ═══════════════════════════════════════════════════
+   BADGE SVG WRAPPER
+═══════════════════════════════════════════════════ */
+#badge-preview {
+  margin: 20px auto;
+  width: 200px; height: 200px;
+  display: none;
+}
+#badge-preview.show { display: block; }
+#download-badge {
+  margin-top: 14px;
+  display: none;
+}
+#download-badge.show { display: inline-flex; }
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════ */
+@media (max-width: 640px) {
+  #app { padding: 20px 14px 80px; gap: 40px; }
+  .glass-card { padding: 32px 22px; }
+  .mood-orb { min-width: 80px; padding: 14px 16px; }
+  .mood-emoji { font-size: 2rem; }
+  .pet-grid { grid-template-columns: 1fr; }
+  .jar-layout { flex-direction: column; }
+  .jar-display { flex: 0 0 auto; width: 100%; align-items: center; }
+  #progress-nav { right: 8px; }
+  .wisdom-bubble { max-width: 200px; font-size: 0.85rem; }
+  .stage-title { font-size: 1.6rem; }
+}
+
+/* ═══════════════════════════════════════════════════
+   TOOLTIP HINT
+═══════════════════════════════════════════════════ */
+.hint-text {
+  font-size: 0.78rem;
+  color: var(--text-soft);
+  display: flex; align-items: center; gap: 6px;
+  margin-top: 10px;
+}
+.hint-text::before { content: '✦'; color: var(--rose); }
+
+/* ═══════════════════════════════════════════════════
+   GLOW ACCENTS
+═══════════════════════════════════════════════════ */
+.glow-pink { color: #e8739a; font-weight: 600; }
+.pill-tag {
+  display: inline-block;
+  padding: 3px 14px;
+  border-radius: 100px;
+  background: rgba(255,209,220,0.5);
+  border: 1px solid rgba(255,209,220,0.7);
+  font-size: 0.75rem;
+  color: var(--rose);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin-bottom: 14px;
+}
+
+/* Stage 5 instructions */
+.arena-hint {
+  position: absolute; bottom: 14px; right: 18px;
+  font-size: 0.75rem; color: rgba(120,100,140,0.5);
+  pointer-events: none;
+  font-style: italic;
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     BACKGROUNDS & PARTICLES
+══════════════════════════════════════════════ -->
+<div id="bg-gradient"></div>
+<canvas id="particle-canvas"></canvas>
+
+<!-- Custom Cursor -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<!-- ══════════════════════════════════════════════
+     BREATH OVERLAY
+══════════════════════════════════════════════ -->
+<div id="breath-overlay">
+  <div style="text-align:center;">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:0.85rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--text-soft);margin-bottom:24px;">4 · 7 · 8 Breathing</div>
+    <div id="breath-circle">
+      <div style="text-align:center;">
+        <div id="breath-phase">Breathe In</div>
+        <div id="breath-count">4</div>
+      </div>
+    </div>
+    <div style="margin-top:22px;font-family:'Nunito',sans-serif;font-size:0.9rem;color:var(--text-mid);max-width:300px;line-height:1.6;">
+      We're going to protect your peace today like it's a tiny flame in the wind.
+    </div>
+  </div>
+  <button id="breath-skip">Skip &rarr; I'm ready</button>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     HUG OVERLAY
+══════════════════════════════════════════════ -->
+<div id="hug-overlay">
+  <div id="hug-light"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PROGRESS NAVIGATION
+══════════════════════════════════════════════ -->
+<nav id="progress-nav" aria-label="Journey progress">
+  <div class="prog-dot active" data-stage="1" title="Sanctuary Gate"></div>
+  <div class="prog-dot" data-stage="2" title="Mood Check-In"></div>
+  <div class="prog-dot" data-stage="3" title="Pet Sanctuary"></div>
+  <div class="prog-dot" data-stage="4" title="Affirmation Mirror"></div>
+  <div class="prog-dot" data-stage="5" title="Stress Crusher"></div>
+  <div class="prog-dot" data-stage="6" title="Memory Jar"></div>
+  <div class="prog-dot" data-stage="7" title="Final Embrace"></div>
+</nav>
+
+<!-- ══════════════════════════════════════════════
+     MAIN APPLICATION
+══════════════════════════════════════════════ -->
+<main id="app">
+
+  <!-- ▓▓▓ STAGE 1: SANCTUARY GATE ▓▓▓ -->
+  <section id="stage-1" class="reveal" data-stage="1">
+    <div class="glass-card">
+      <div class="avatar-wrap">
+        <div style="width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,#FFD1DC,#E0F7FA,#EDE7F6);display:flex;align-items:center;justify-content:center;font-size:4.5rem;">🌸</div>
+      </div>
+
+      <div class="pill-tag">✦ Your Sanctuary Awaits</div>
+      <h1 class="stage-title">The world is loud.<br><em>Let's make it quiet</em><br>for a moment.</h1>
+      <p class="stage-body" style="text-align:center;margin:0 auto 28px;">
+        We're carving out this space just for us. No rush, no noise, no expectations.<br>Just warmth, softness, and a little bit of wonder.
+      </p>
+
+      <button class="btn btn-primary" id="breath-btn" onclick="startBreathing()">
+        <div class="pulse-ring"></div>
+        🫧 Sync Our Breath First
+      </button>
+      <div id="breath-text">breathe with us for just one minute ✦</div>
+    </div>
+  </section>
+
+  <!-- ▓▓▓ STAGE 2: MOOD CHECK-IN ▓▓▓ -->
+  <section id="stage-2" class="reveal" data-stage="2">
+    <div class="glass-card">
+      <div class="stage-label">Stage 2 of 7</div>
+      <h2 class="stage-title">How are we <em>actually</em> feeling?</h2>
+      <p class="stage-body">No performance here. Whatever we're carrying right now — we can set it down for a second and just… name it. That's the first act of kindness we can give ourselves.</p>
+      <div class="divider"></div>
+
+      <div class="mood-grid">
+        <div class="mood-orb" onclick="selectMood(this, 'sad')" data-mood="sad">
+          <span class="mood-emoji">😢</span>
+          <span class="mood-label">Sad</span>
+        </div>
+        <div class="mood-orb" onclick="selectMood(this, 'tired')" data-mood="tired">
+          <span class="mood-emoji">😴</span>
+          <span class="mood-label">Tired</span>
+        </div>
+        <div class="mood-orb" onclick="selectMood(this, 'anxious')" data-mood="anxious">
+          <span class="mood-emoji">😰</span>
+          <span class="mood-label">Anxious</span>
+        </div>
+        <div class="mood-orb" onclick="selectMood(this, 'angry')" data-mood="angry">
+          <span class="mood-emoji">😤</span>
+          <span class="mood-label">Frustrated</span>
+        </div>
+        <div class="mood-orb" onclick="selectMood(this, 'okay')" data-mood="okay">
+          <span class="mood-emoji">🙂</span>
+          <span class="mood-label">Just Okay</span>
+        </div>
+      </div>
+
+      <div id="mood-response" role="status" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- ▓▓▓ STAGE 3: PET SANCTUARY ▓▓▓ -->
+  <section id="stage-3" class="reveal" data-stage="3">
+    <div class="glass-card">
+      <div class="stage-label">Stage 3 of 7</div>
+      <h2 class="stage-title">They've been <em>waiting</em> for us.</h2>
+      <p class="stage-body">Science says that even seeing a picture of something soft and round can lower cortisol by up to 40%. We're going full science right now. These three? They love us unconditionally.</p>
+      <div class="divider"></div>
+
+      <div class="pet-grid">
+        <!-- Golden Retriever -->
+        <div class="pet-card" id="pet-0">
+          <canvas class="pet-canvas" id="pet-canvas-0"></canvas>
+          <div class="pet-img-wrap">
+            <div class="pet-emoji-fallback">🐕</div>
+          </div>
+          <div class="pet-name">Sunny</div>
+          <div class="pet-tagline">Golden Retriever · Professional joy distributor</div>
+          <button class="btn" style="font-size:0.85rem;padding:10px 24px;" onclick="petAnimal(0, this)">🐾 Pet Sunny</button>
+          <div class="pet-love-count" id="pet-count-0"></div>
+        </div>
+
+        <!-- Red Panda -->
+        <div class="pet-card" id="pet-1">
+          <canvas class="pet-canvas" id="pet-canvas-1"></canvas>
+          <div class="pet-img-wrap">
+            <div class="pet-emoji-fallback">🦊</div>
+          </div>
+          <div class="pet-name">Mochi</div>
+          <div class="pet-tagline">Red Panda · Tiny chaos, maximum cuteness</div>
+          <button class="btn" style="font-size:0.85rem;padding:10px 24px;" onclick="petAnimal(1, this)">🍡 Pet Mochi</button>
+          <div class="pet-love-count" id="pet-count-1"></div>
+        </div>
+
+        <!-- Round Seal -->
+        <div class="pet-card" id="pet-2">
+          <canvas class="pet-canvas" id="pet-canvas-2"></canvas>
+          <div class="pet-img-wrap">
+            <div class="pet-emoji-fallback">🦭</div>
+          </div>
+          <div class="pet-name">Pudding</div>
+          <div class="pet-tagline">Round Seal · 98% ball, 100% love</div>
+          <button class="btn" style="font-size:0.85rem;padding:10px 24px;" onclick="petAnimal(2, this)">💙 Pet Pudding</button>
+          <div class="pet-love-count" id="pet-count-2"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ▓▓▓ STAGE 4: AFFIRMATION MIRROR ▓▓▓ -->
+  <section id="stage-4" class="reveal" data-stage="4">
+    <div class="glass-card">
+      <div class="stage-label">Stage 4 of 7</div>
+      <h2 class="stage-title">These truths were <em>meant</em> to find us.</h2>
+      <p class="stage-body">Each bubble holds something we might have forgotten about ourselves. When we're ready — we pop it open.</p>
+      <div class="hint-text">Tap each bubble to reveal the wisdom inside</div>
+      <div class="divider"></div>
+
+      <div class="wisdom-container" id="bubbles-container">
+        <div class="wisdom-bubble" onclick="popBubble(this, 0)">✨ tap me</div>
+        <div class="wisdom-bubble" onclick="popBubble(this, 1)">💜 open me</div>
+        <div class="wisdom-bubble" onclick="popBubble(this, 2)">🌸 i'm for us</div>
+        <div class="wisdom-bubble" onclick="popBubble(this, 3)">🫧 crack me</div>
+        <div class="wisdom-bubble" onclick="popBubble(this, 4)">💫 we're ready</div>
+      </div>
+
+      <div id="affirmations-revealed"></div>
+    </div>
+  </section>
+
+  <!-- ▓▓▓ STAGE 5: STRESS CRUSHER ▓▓▓ -->
+  <section id="stage-5" class="reveal" data-stage="5">
+    <div class="glass-card">
+      <div class="stage-label">Stage 5 of 7</div>
+      <h2 class="stage-title">Let's watch the heavy stuff <em>bloom</em> into something beautiful.</h2>
+      <p class="stage-body">Those gray clouds? They don't stand a chance. Every worry we click on becomes a garden.</p>
+      <div class="divider"></div>
+
+      <div id="stress-arena">
+        <div class="arena-hint">click the clouds ☁️</div>
+      </div>
+      <div id="cloud-score">We've transformed <span id="cloud-count">0</span> stress clouds into flowers 🌸</div>
+    </div>
+  </section>
+
+  <!-- ▓▓▓ STAGE 6: MEMORY JAR ▓▓▓ -->
+  <section id="stage-6" class="reveal" data-stage="6">
+    <div class="glass-card">
+      <div class="stage-label">Stage 6 of 7</div>
+      <h2 class="stage-title">One small light from <em>today.</em></h2>
+      <p class="stage-body">Even on the heaviest days, something went gently right. A warm drink. A song that arrived at the perfect moment. Even just — we woke up. That counts enormously.</p>
+      <div class="divider"></div>
+
+      <div class="jar-layout">
+        <div class="jar-input-area">
+          <textarea id="memory-input" placeholder="Type one small thing that went right today… (even tiny ones count 💛)" maxlength="200"></textarea>
+          <button class="btn btn-primary" onclick="saveMemory()">
+            ⭐ Save This Moment
+          </button>
+          <div class="hint-text">It becomes a glowing star in our jar</div>
+        </div>
+
+        <div class="jar-display">
+          <div class="jar-svg-wrap">
+            <!-- Jar SVG -->
+            <svg viewBox="0 0 130 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="38" y="6" width="54" height="14" rx="7" fill="rgba(200,180,220,0.5)" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"/>
+              <path d="M18 35 C10 35 8 45 8 55 L8 130 C8 142 16 152 28 152 L102 152 C114 152 122 142 122 130 L122 55 C122 45 120 35 112 35 Z" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.7)" stroke-width="1.5"/>
+              <path d="M18 35 C28 32 40 30 65 30 C90 30 102 32 112 35" stroke="rgba(255,255,255,0.9)" stroke-width="2"/>
+              <!-- Shine -->
+              <path d="M18 55 C18 50 22 46 28 44 L30 44" stroke="rgba(255,255,255,0.6)" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <div id="jar-stars-container"></div>
+          </div>
+          <div class="jar-count" id="jar-count">0 memories ✦</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ▓▓▓ STAGE 7: FINAL EMBRACE ▓▓▓ -->
+  <section id="stage-7" class="reveal" data-stage="7">
+    <div class="glass-card">
+      <div class="stage-label">Stage 7 of 7</div>
+
+      <div class="embrace-emoji-fallback">🌷</div>
+
+      <div class="pill-tag" style="margin:0 auto 16px;">✦ We Made It</div>
+      <h2 class="stage-title">We protected <em>our peace</em> today.<br>That's enough.</h2>
+      <p class="stage-body" style="text-align:center;margin:0 auto 32px;">
+        We showed up for ourselves. We breathed, we played, we remembered tiny lights. 
+        That's not a small thing. That's the most important thing.<br><br>
+        <span class="glow-pink">We are still here. We are still trying. And that is remarkable.</span>
+      </p>
+
+      <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
+        <button class="btn btn-hug" onclick="triggerHug()">
+          🤗 Receive a Virtual Hug
+        </button>
+
+        <div class="badge-area">
+          <div id="badge-preview"></div>
+          <button class="btn" id="download-badge" onclick="downloadBadge()">
+            ⬇️ Download Joy Badge
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main><!-- /#app -->
+
+<!-- ══════════════════════════════════════════════
+     JAVASCRIPT — ALL SYSTEMS
+══════════════════════════════════════════════ -->
+<script>
+/* ════════════════════════════════════════════
+   GSAP REGISTRATION
+════════════════════════════════════════════ */
+gsap.registerPlugin(ScrollTrigger);
+
+/* ════════════════════════════════════════════
+   CUSTOM CURSOR
+════════════════════════════════════════════ */
+const cursorDot  = document.getElementById('cursor-dot');
+const cursorRing = document.getElementById('cursor-ring');
+let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  gsap.to(cursorDot, { x: mouseX, y: mouseY, duration: 0.1, ease: 'none' });
+});
+
+(function ringFollow() {
+  ringX += (mouseX - ringX) * 0.12;
+  ringY += (mouseY - ringY) * 0.12;
+  cursorRing.style.left = ringX + 'px';
+  cursorRing.style.top  = ringY + 'px';
+  requestAnimationFrame(ringFollow);
+})();
+
+document.querySelectorAll('button,.mood-orb,.wisdom-bubble,.stress-cloud,.prog-dot').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    gsap.to(cursorDot,  { scale: 2.2, background: '#e8739a', duration: 0.25 });
+    gsap.to(cursorRing, { scale: 1.5, opacity: 0.6, duration: 0.25 });
+  });
+  el.addEventListener('mouseleave', () => {
+    gsap.to(cursorDot,  { scale: 1, background: '#F8A7BE', duration: 0.25 });
+    gsap.to(cursorRing, { scale: 1, opacity: 1, duration: 0.25 });
+  });
+});
+
+/* ════════════════════════════════════════════
+   PARTICLE ENGINE — SAKURA & FIREFLIES
+════════════════════════════════════════════ */
+(function initParticles() {
+  const canvas = document.getElementById('particle-canvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H;
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const PETAL_COUNT    = 28;
+  const FIREFLY_COUNT  = 14;
+  let curX = W / 2, curY = H / 2;
+
+  document.addEventListener('mousemove', e => { curX = e.clientX; curY = e.clientY; });
+  document.addEventListener('touchmove', e => { curX = e.touches[0].clientX; curY = e.touches[0].clientY; }, { passive: true });
+
+  /* Sakura Petals */
+  const petals = Array.from({ length: PETAL_COUNT }, () => ({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    size: 5 + Math.random() * 8,
+    speedY: 0.4 + Math.random() * 0.8,
+    speedX: (Math.random() - 0.5) * 0.6,
+    angle: Math.random() * Math.PI * 2,
+    spin:  (Math.random() - 0.5) * 0.04,
+    opacity: 0.4 + Math.random() * 0.5,
+    color: ['#FFD1DC', '#FFB6C1', '#FFC0CB', '#FFDDE1', '#F8BBD0'][Math.floor(Math.random() * 5)]
+  }));
+
+  /* Firefly Orbs */
+  const fireflies = Array.from({ length: FIREFLY_COUNT }, () => ({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    targetX: Math.random() * W,
+    targetY: Math.random() * H,
+    size: 3 + Math.random() * 5,
+    speed: 0.005 + Math.random() * 0.01,
+    opacity: 0.3 + Math.random() * 0.5,
+    pulse: Math.random() * Math.PI * 2,
+    color: ['rgba(255,215,0,', 'rgba(255,182,193,', 'rgba(200,170,255,', 'rgba(150,230,220,'][Math.floor(Math.random() * 4)]
+  }));
+
+  function drawPetal(p) {
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.angle);
+    ctx.globalAlpha = p.opacity;
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, p.size, p.size * 0.55, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawFirefly(f) {
+    const pulse = 0.5 + 0.5 * Math.sin(f.pulse);
+    const grd = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.size * 3 * pulse);
+    grd.addColorStop(0,   f.color + (f.opacity * pulse).toFixed(2) + ')');
+    grd.addColorStop(0.5, f.color + (f.opacity * 0.3 * pulse).toFixed(2) + ')');
+    grd.addColorStop(1,   f.color + '0)');
+    ctx.fillStyle = grd;
+    ctx.beginPath();
+    ctx.arc(f.x, f.y, f.size * 3 * pulse, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = f.color + f.opacity.toFixed(2) + ')';
+    ctx.beginPath();
+    ctx.arc(f.x, f.y, f.size * 0.6, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function tick() {
+    ctx.clearRect(0, 0, W, H);
+
+    /* Update & draw petals */
+    petals.forEach(p => {
+      /* Subtle cursor repulsion */
+      const dx = p.x - curX, dy = p.y - curY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 120) {
+        p.x += (dx / dist) * 0.8;
+        p.y += (dy / dist) * 0.8;
+      }
+      p.x += p.speedX;
+      p.y += p.speedY;
+      p.angle += p.spin;
+      if (p.y > H + 20)  { p.y = -20; p.x = Math.random() * W; }
+      if (p.x > W + 20)  { p.x = -20; }
+      if (p.x < -20)     { p.x = W + 20; }
+      drawPetal(p);
+    });
+
+    /* Update & draw fireflies */
+    fireflies.forEach(f => {
+      f.x += (f.targetX - f.x) * f.speed;
+      f.y += (f.targetY - f.y) * f.speed;
+      f.pulse += 0.035;
+      /* Drift toward cursor very gently */
+      f.targetX += (curX - f.targetX) * 0.0008;
+      f.targetY += (curY - f.targetY) * 0.0008;
+      if (Math.abs(f.x - f.targetX) < 5 && Math.abs(f.y - f.targetY) < 5) {
+        f.targetX = Math.random() * W;
+        f.targetY = Math.random() * H;
+      }
+      drawFirefly(f);
+    });
+
+    requestAnimationFrame(tick);
+  }
+  tick();
+})();
+
+/* ════════════════════════════════════════════
+   SCROLL REVEAL — GSAP ScrollTrigger
+════════════════════════════════════════════ */
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  gsap.to(el, {
+    scrollTrigger: {
+      trigger: el,
+      start: 'top 85%',
+      onEnter: () => {
+        gsap.to(el, {
+          opacity: 1,
+          y: 0,
+          duration: 0.9,
+          ease: 'power4.out',
+          delay: i === 0 ? 0.3 : 0
+        });
+        /* Activate progress dot */
+        const stageNum = el.dataset.stage;
+        document.querySelectorAll('.prog-dot').forEach(d => d.classList.remove('active'));
+        const dot = document.querySelector(`.prog-dot[data-stage="${stageNum}"]`);
+        if (dot) dot.classList.add('active');
+      }
+    }
+  });
+});
+
+/* First stage immediate reveal */
+gsap.to('#stage-1', { opacity: 1, y: 0, duration: 1, ease: 'power4.out', delay: 0.4 });
+
+/* ════════════════════════════════════════════
+   STAGE 1 — BREATHING EXERCISE (4-7-8)
+════════════════════════════════════════════ */
+let breathInterval = null;
+let breathComplete  = false;
+
+function startBreathing() {
+  document.getElementById('breath-overlay').classList.add('active');
+  runBreathCycle();
+}
+
+function runBreathCycle() {
+  const circle = document.getElementById('breath-circle');
+  const phaseEl = document.getElementById('breath-phase');
+  const countEl = document.getElementById('breath-count');
+
+  const phases = [
+    { name: '✦ Breathe In',  duration: 4,  scale: 1.5,  color: 'rgba(255,209,220,0.85)' },
+    { name: '✦ Hold',        duration: 7,  scale: 1.5,  color: 'rgba(237,231,246,0.85)' },
+    { name: '✦ Breathe Out', duration: 8,  scale: 1.0,  color: 'rgba(224,247,250,0.85)' },
+  ];
+
+  let cyclesDone = 0;
+  const maxCycles = 3;
+
+  function runPhase(phaseIdx) {
+    if (cyclesDone >= maxCycles) {
+      setTimeout(() => {
+        document.getElementById('breath-overlay').classList.remove('active');
+        document.getElementById('breath-text').textContent = '✦ beautifully done — we breathe together';
+      }, 600);
+      return;
+    }
+
+    const phase = phases[phaseIdx];
+    phaseEl.textContent = phase.name;
+    countEl.textContent = phase.duration;
+
+    gsap.to(circle, {
+      scale: phase.scale,
+      background: `radial-gradient(circle, ${phase.color}, rgba(221,160,221,0.3))`,
+      duration: 0.8,
+      ease: 'power2.inOut'
+    });
+
+    let count = phase.duration;
+    const timer = setInterval(() => {
+      count--;
+      countEl.textContent = count;
+      if (count <= 0) {
+        clearInterval(timer);
+        const next = (phaseIdx + 1) % phases.length;
+        if (next === 0) cyclesDone++;
+        runPhase(next);
+      }
+    }, 1000);
+  }
+
+  runPhase(0);
+}
+
+document.getElementById('breath-skip').addEventListener('click', () => {
+  document.getElementById('breath-overlay').classList.remove('active');
+  document.getElementById('breath-text').textContent = '✦ whenever we\'re ready, we keep going';
+});
+
+/* ════════════════════════════════════════════
+   STAGE 2 — MOOD CHECK-IN
+════════════════════════════════════════════ */
+const moodResponses = {
+  sad: `That takes courage to admit. Sadness is just love with nowhere to land right now. We're going to give it somewhere beautiful to go. You're in good company here — every soft thing in this space was made for exactly this feeling. 💜`,
+  tired: `Being tired is our body whispering "we've been doing so much." That's not weakness — that's evidence. Let this space be the exhale we've been holding back. We don't have to do anything here. Just be. 🌙`,
+  anxious: `The mind in overdrive, the heart a little too loud — we see it. We're gently, lovingly putting a hand on that spinning spiral and slowing it down together. Every single breath here is an act of bravery. 🫧`,
+  angry: `Frustration means something mattered enough to sting. That feeling is valid and real. Let's not push it away — let's walk *through* this space and let some of that heat turn into something that blooms. 🌸`,
+  okay: `"Okay" is actually kind of underrated. It's the baseline of a thousand possible wonderful things. We're starting from here, and we're going somewhere a little more golden together. ✨`
+};
+
+let currentMood = null;
+
+function selectMood(el, mood) {
+  document.querySelectorAll('.mood-orb').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  currentMood = mood;
+
+  gsap.fromTo(el, { scale: 0.9 }, { scale: 1, ease: 'elastic.out(1.2, 0.5)', duration: 0.6 });
+
+  const resp = document.getElementById('mood-response');
+  resp.textContent = moodResponses[mood];
+  resp.classList.add('visible');
+  gsap.fromTo(resp, { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' });
+}
+
+/* ════════════════════════════════════════════
+   STAGE 3 — PET SANCTUARY (Canvas Hearts)
+════════════════════════════════════════════ */
+const petCounts = [0, 0, 0];
+const petParticles = [[], [], []];
+
+function initPetCanvas(idx) {
+  const canvas = document.getElementById(`pet-canvas-${idx}`);
+  const card   = document.getElementById(`pet-${idx}`);
+  canvas.width  = card.offsetWidth;
+  canvas.height = card.offsetHeight;
+}
+
+document.querySelectorAll('.pet-card').forEach((card, i) => {
+  const obs = new ResizeObserver(() => initPetCanvas(i));
+  obs.observe(card);
+  initPetCanvas(i);
+});
+
+function petAnimal(idx, btn) {
+  petCounts[idx]++;
+  const count = petCounts[idx];
+  const countEl = document.getElementById(`pet-count-${idx}`);
+
+  const labels = ['petting...', 'they love it!', 'so happy! 🥰', 'pure joy! 💕', 'best friends!'];
+  countEl.textContent = `${labels[Math.min(count - 1, labels.length - 1)]} ×${count}`;
+
+  /* Button bounce */
+  gsap.fromTo(btn, { scale: 0.92 }, { scale: 1, ease: 'elastic.out(1.3,0.5)', duration: 0.5 });
+
+  /* Spawn heart particles */
+  const canvas = document.getElementById(`pet-canvas-${idx}`);
+  const rect   = canvas.getBoundingClientRect();
+  const cx     = canvas.width / 2;
+  const cy     = canvas.height * 0.45;
+
+  for (let i = 0; i < 14; i++) {
+    petParticles[idx].push({
+      x: cx + (Math.random() - 0.5) * 40,
+      y: cy + (Math.random() - 0.5) * 20,
+      vx: (Math.random() - 0.5) * 4,
+      vy: -(2 + Math.random() * 4),
+      size: 8 + Math.random() * 12,
+      opacity: 1,
+      rotation: (Math.random() - 0.5) * 60,
+      color: ['#FF69B4','#FF85A2','#FFB6C1','#FF1493','#DA70D6','#FFD1DC'][Math.floor(Math.random() * 6)]
+    });
+  }
+
+  animatePetCanvas(idx);
+}
+
+function drawHeart(ctx, x, y, size, color, opacity, rotation) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(rotation * Math.PI / 180);
+  ctx.globalAlpha = opacity;
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  const s = size / 30;
+  ctx.moveTo(0, -8 * s);
+  ctx.bezierCurveTo(8 * s, -16 * s, 20 * s, -6 * s, 0, 8 * s);
+  ctx.bezierCurveTo(-20 * s, -6 * s, -8 * s, -16 * s, 0, -8 * s);
+  ctx.fill();
+  ctx.restore();
+}
+
+const petAnimFrames = [null, null, null];
+
+function animatePetCanvas(idx) {
+  if (petAnimFrames[idx]) return;
+
+  const canvas = document.getElementById(`pet-canvas-${idx}`);
+  const ctx    = canvas.getContext('2d');
+
+  function frame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const particles = petParticles[idx];
+
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.08; /* gravity */
+      p.opacity -= 0.018;
+      p.rotation += 2;
+
+      if (p.opacity <= 0) {
+        particles.splice(i, 1);
+        continue;
+      }
+      drawHeart(ctx, p.x, p.y, p.size, p.color, p.opacity, p.rotation);
+    }
+
+    if (particles.length > 0) {
+      petAnimFrames[idx] = requestAnimationFrame(frame);
+    } else {
+      petAnimFrames[idx] = null;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+
+  petAnimFrames[idx] = requestAnimationFrame(frame);
+}
+
+/* ════════════════════════════════════════════
+   STAGE 4 — AFFIRMATION BUBBLES
+════════════════════════════════════════════ */
+const affirmations = [
+  "Your soul has a glow that people notice even when you don't. It radiates from the way you care, quietly, without needing applause.",
+  "The tenderness you show to others? We need to turn that exact same softness around and give it to ourselves. We deserve it just as fiercely.",
+  "Every hard day we've survived has carved something deeper into us. Not damage — depth. We are profoundly interesting because of it.",
+  "Our sensitivity is not a wound. It is a superpower wrapped in something the world told us to be ashamed of. Let's unwrap it.",
+  "Something about us makes rooms feel warmer just by us being in them. That's not nothing. That's an extraordinary kind of magic."
+];
+
+function popBubble(el, idx) {
+  if (el.classList.contains('popped')) return;
+  el.classList.add('popped');
+
+  /* Pop animation then reveal */
+  setTimeout(() => {
+    el.style.display = 'none';
+    const container = document.getElementById('affirmations-revealed');
+    const div = document.createElement('div');
+    div.className = 'wisdom-reveal show';
+    div.innerHTML = `<span style="color:var(--rose);margin-right:8px;">✦</span>${affirmations[idx]}`;
+    container.appendChild(div);
+
+    /* Sparkle burst at click position */
+    spawnSparkles(event.clientX, event.clientY);
+  }, 500);
+}
+
+function spawnSparkles(x, y) {
+  const symbols = ['✦', '✧', '⋆', '★', '✿'];
+  for (let i = 0; i < 10; i++) {
+    const sp = document.createElement('div');
+    sp.style.cssText = `
+      position:fixed; left:${x}px; top:${y}px; pointer-events:none; z-index:700;
+      font-size:${10 + Math.random() * 14}px;
+      color:hsl(${320 + Math.random() * 60}, 80%, 70%);
+    `;
+    sp.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    document.body.appendChild(sp);
+
+    gsap.to(sp, {
+      x: (Math.random() - 0.5) * 120,
+      y: (Math.random() - 0.5) * 120,
+      opacity: 0,
+      scale: 0,
+      duration: 0.9 + Math.random() * 0.6,
+      ease: 'power3.out',
+      onComplete: () => sp.remove()
+    });
+  }
+}
+
+/* ════════════════════════════════════════════
+   STAGE 5 — STRESS CRUSHER
+════════════════════════════════════════════ */
+let cloudCount = 0;
+const blooms = ['🌸', '🌺', '🌻', '🌼', '🦋', '🌷', '🌹', '💐', '🦋', '🌾'];
+const cloudEmojis = ['☁️', '🌧️', '⛈️'];
+
+function launchCloud() {
+  const arena = document.getElementById('stress-arena');
+  if (!arena) return;
+
+  const cloud = document.createElement('div');
+  cloud.className = 'stress-cloud';
+  cloud.textContent = cloudEmojis[Math.floor(Math.random() * cloudEmojis.length)];
+
+  const topPct = 15 + Math.random() * 65;
+  const dur    = 9 + Math.random() * 8;
+  cloud.style.top  = topPct + '%';
+  cloud.style.left = '-80px';
+  cloud.style.animationDuration = dur + 's';
+  cloud.style.fontSize = (2.8 + Math.random() * 1.5) + 'rem';
+  cloud.style.opacity  = 0.6 + Math.random() * 0.3;
+  cloud.style.filter = 'grayscale(80%) brightness(0.85)';
+  cloud.style.transition = 'transform 0.15s';
+
+  cloud.addEventListener('click', function(e) {
+    e.stopPropagation();
+    cloudCount++;
+    document.getElementById('cloud-count').textContent = cloudCount;
+
+    const rect = cloud.getBoundingClientRect();
+    const arenaRect = arena.getBoundingClientRect();
+
+    /* Burst effect */
+    for (let i = 0; i < 5; i++) {
+      const bloom = document.createElement('div');
+      bloom.className = 'bloom';
+      bloom.textContent = blooms[Math.floor(Math.random() * blooms.length)];
+      bloom.style.left = (rect.left - arenaRect.left + (Math.random() - 0.5) * 60) + 'px';
+      bloom.style.top  = (rect.top  - arenaRect.top  + (Math.random() - 0.5) * 40) + 'px';
+      bloom.style.animationDuration = (1.8 + Math.random() * 1.2) + 's';
+      bloom.style.animationDelay = (Math.random() * 0.3) + 's';
+      arena.appendChild(bloom);
+      setTimeout(() => bloom.remove(), 3500);
+    }
+
+    /* Remove cloud */
+    gsap.to(cloud, {
+      scale: 0, opacity: 0, duration: 0.4, ease: 'power3.in',
+      onComplete: () => cloud.remove()
+    });
+
+    spawnSparkles(e.clientX, e.clientY);
+  });
+
+  arena.appendChild(cloud);
+  setTimeout(() => { if (cloud.parentNode) cloud.remove(); }, dur * 1000 + 500);
+}
+
+/* Start cloud spawning when stage is visible */
+let cloudInterval = null;
+ScrollTrigger.create({
+  trigger: '#stage-5',
+  start: 'top 75%',
+  onEnter: () => {
+    if (!cloudInterval) {
+      launchCloud();
+      cloudInterval = setInterval(launchCloud, 2400);
+    }
+  }
+});
+
+/* ════════════════════════════════════════════
+   STAGE 6 — MEMORY JAR
+════════════════════════════════════════════ */
+let jarCount = 0;
+
+function saveMemory() {
+  const input = document.getElementById('memory-input');
+  const text  = input.value.trim();
+  if (!text) {
+    gsap.fromTo('#memory-input', { x: -6 }, { x: 6, repeat: 4, yoyo: true, duration: 0.07, ease: 'none', onComplete: () => gsap.set('#memory-input', { x: 0 }) });
+    return;
+  }
+
+  jarCount++;
+  input.value = '';
+
+  /* Get positions */
+  const btn    = document.querySelector('#stage-6 .btn-primary');
+  const jarEl  = document.getElementById('jar-stars-container');
+  const btnRect = btn.getBoundingClientRect();
+  const jarRect = jarEl.getBoundingClientRect();
+
+  /* Create flying star */
+  const star = document.createElement('div');
+  star.className = 'flying-star';
+  star.textContent = '⭐';
+  star.style.left = btnRect.left + btnRect.width / 2 + 'px';
+  star.style.top  = btnRect.top + 'px';
+  document.body.appendChild(star);
+
+  gsap.to(star, {
+    x: jarRect.left + jarRect.width / 2 - btnRect.left - btnRect.width / 2,
+    y: jarRect.top  + jarRect.height / 2 - btnRect.top,
+    scale: 0.6,
+    duration: 0.9,
+    ease: 'power3.inOut',
+    onComplete: () => {
+      star.remove();
+      /* Add star to jar */
+      const s = document.createElement('div');
+      s.className = 'jar-star';
+      s.textContent = '⭐';
+      s.title = text;
+      jarEl.appendChild(s);
+      document.getElementById('jar-count').textContent = `${jarCount} memor${jarCount === 1 ? 'y' : 'ies'} ✦`;
+    }
+  });
+
+  /* Pulse the jar */
+  gsap.fromTo('.jar-svg-wrap', { scale: 1 }, { scale: 1.08, yoyo: true, repeat: 1, duration: 0.25, ease: 'power2.inOut' });
+}
+
+/* Enter key to save */
+document.getElementById('memory-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) saveMemory();
+});
+
+/* ════════════════════════════════════════════
+   STAGE 7 — VIRTUAL HUG & BADGE
+════════════════════════════════════════════ */
+function triggerHug() {
+  const overlay = document.getElementById('hug-overlay');
+  overlay.classList.add('active');
+  const light = document.getElementById('hug-light');
+
+  /* Light burst */
+  gsap.to(light, {
+    background: 'radial-gradient(ellipse at center, rgba(255,220,235,0.75) 0%, rgba(255,240,248,0.4) 50%, transparent 75%)',
+    duration: 0.5,
+    ease: 'power2.out',
+    onComplete: () => {
+      gsap.to(light, { background: 'radial-gradient(ellipse at center, rgba(255,230,240,0.0), transparent)', duration: 2, delay: 0.8, ease: 'power2.in' });
+    }
+  });
+
+  /* Spawn hearts */
+  const heartEmojis = ['💗','💕','💖','💓','💝','🌸','✨','💞'];
+  for (let i = 0; i < 30; i++) {
+    setTimeout(() => {
+      const h = document.createElement('div');
+      h.className = 'hug-heart';
+      h.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+      h.style.left    = (5 + Math.random() * 90) + 'vw';
+      h.style.bottom  = '-40px';
+      h.style.fontSize = (1.2 + Math.random() * 2) + 'rem';
+      const dur = 2.5 + Math.random() * 2;
+      h.style.animationDuration = dur + 's';
+      h.style.animationDelay   = '0s';
+      overlay.appendChild(h);
+      setTimeout(() => h.remove(), dur * 1000 + 200);
+    }, i * 90);
+  }
+
+  setTimeout(() => {
+    overlay.classList.remove('active');
+    showBadge();
+  }, 3800);
+}
+
+function showBadge() {
+  const badgeContainer = document.getElementById('badge-preview');
+  const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+  /* Generate badge as inline SVG */
+  const svgContent = `
+  <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+    <defs>
+      <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#FFF0F5"/>
+        <stop offset="100%" stop-color="#FFD1DC"/>
+      </radialGradient>
+      <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#F8A7BE"/>
+        <stop offset="50%" stop-color="#DDA0DD"/>
+        <stop offset="100%" stop-color="#E0F7FA"/>
+      </linearGradient>
+    </defs>
+    <circle cx="100" cy="100" r="96" fill="url(#bg)" stroke="url(#ring)" stroke-width="3"/>
+    <circle cx="100" cy="100" r="85" fill="none" stroke="rgba(248,167,190,0.3)" stroke-width="1" stroke-dasharray="4,4"/>
+    <text x="100" y="60" text-anchor="middle" font-family="Georgia,serif" font-size="34" fill="#e8739a">🌸</text>
+    <text x="100" y="92" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="11" fill="#7E6A9A" letter-spacing="1">I protected my peace</text>
+    <text x="100" y="112" text-anchor="middle" font-family="Georgia,serif" font-weight="bold" font-size="14" fill="#4A3860">JOY BADGE</text>
+    <text x="100" y="130" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#B8A8CC">${today}</text>
+    <text x="100" y="158" text-anchor="middle" font-family="Georgia,serif" font-size="20" fill="#F8A7BE">✦ ✦ ✦</text>
+    <text x="100" y="176" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="8.5" fill="#B8A8CC">Emotional Oasis</text>
+  </svg>`;
+
+  badgeContainer.innerHTML = svgContent;
+  badgeContainer.classList.add('show');
+
+  const downloadBtn = document.getElementById('download-badge');
+  downloadBtn.classList.add('show');
+
+  gsap.fromTo(badgeContainer, { scale: 0, opacity: 0, rotation: -15 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.8, ease: 'elastic.out(1.1, 0.5)' });
+}
+
+function downloadBadge() {
+  const svgEl   = document.querySelector('#badge-preview svg');
+  const svgData = new XMLSerializer().serializeToString(svgEl);
+  const blob    = new Blob([svgData], { type: 'image/svg+xml' });
+  const url     = URL.createObjectURL(blob);
+  const a       = document.createElement('a');
+  a.href        = url;
+  a.download    = 'emotional-oasis-joy-badge.svg';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ════════════════════════════════════════════
+   PROGRESS NAV DOTS (click-to-scroll)
+════════════════════════════════════════════ */
+document.querySelectorAll('.prog-dot').forEach(dot => {
+  dot.addEventListener('click', () => {
+    const stageNum = dot.dataset.stage;
+    const target   = document.getElementById(`stage-${stageNum}`);
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+});
+
+/* ════════════════════════════════════════════
+   MICRO-INTERACTION — Button click ripple
+════════════════════════════════════════════ */
+document.querySelectorAll('.btn').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    const ripple = document.createElement('span');
+    const rect   = this.getBoundingClientRect();
+    ripple.style.cssText = `
+      position:absolute;
+      left:${e.clientX - rect.left}px;
+      top:${e.clientY - rect.top}px;
+      width:8px; height:8px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.6);
+      pointer-events:none;
+      transform:translate(-50%,-50%) scale(0);
+    `;
+    this.appendChild(ripple);
+    gsap.to(ripple, {
+      scale: 18,
+      opacity: 0,
+      duration: 0.55,
+      ease: 'power2.out',
+      onComplete: () => ripple.remove()
+    });
+  });
+});
+
+/* ════════════════════════════════════════════
+   AMBIENT MUSIC NOTE HINT (visual only)
+════════════════════════════════════════════ */
+/* Occasionally float a music note for ambiance */
+setInterval(() => {
+  const notes = ['♪','♫','♩','♬'];
+  const n = document.createElement('div');
+  n.textContent = notes[Math.floor(Math.random() * notes.length)];
+  n.style.cssText = `
+    position:fixed;
+    left:${5 + Math.random() * 90}vw;
+    bottom:-30px;
+    font-size:${0.8 + Math.random() * 0.8}rem;
+    color:rgba(200,150,200,${0.15 + Math.random() * 0.2});
+    pointer-events:none;
+    z-index:1;
+  `;
+  document.body.appendChild(n);
+  gsap.to(n, {
+    y: -(window.innerHeight + 50),
+    x: (Math.random() - 0.5) * 60,
+    rotation: (Math.random() - 0.5) * 30,
+    opacity: 0,
+    duration: 12 + Math.random() * 8,
+    ease: 'none',
+    onComplete: () => n.remove()
+  });
+}, 3500);
+
+</script>
+</body>
+</html>
